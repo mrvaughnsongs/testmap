@@ -4,42 +4,59 @@
   <meta charset="UTF-8">
   <title>Map Quiz</title>
   <style>
+    /* Container for the map */
     #map-container {
       position: relative;
       width: 1024px;
     }
+
+    /* Map image */
     #map-image {
       width: 100%;
       display: block;
     }
+
+    /* Overlay for the clickable areas */
     #map-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      pointer-events: none; /* Prevent the overlay from blocking image interaction */
     }
+
+    /* Styles for the polygons */
     polygon {
       fill: transparent;
       stroke: black;
       stroke-width: 2;
       cursor: pointer;
+      pointer-events: auto; /* Allow interaction with SVG polygons */
     }
+
+    /* Hover effect */
     .hovered {
       fill: rgba(0, 255, 0, 0.4);
     }
+
+    /* Selected area color */
     .selected {
       fill: rgba(255, 165, 0, 0.6);
     }
+
+    /* Submit button styling */
     #submit-btn {
       margin-top: 20px;
       font-size: 18px;
       padding: 10px 20px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
+  <!-- Map container with image and overlay for clickable areas -->
   <div id="map-container">
     <img id="map-image" src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
     <svg id="map-overlay" viewBox="0 0 1024 640">
@@ -48,16 +65,19 @@
     </svg>
   </div>
 
+  <!-- Submit button -->
   <div>
     <button id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
   </div>
 
   <script>
     let selected = null;
-    const correctAnswer = "CNN";
+    const correctAnswer = "CNN"; // Set correct answer
 
+    // Get all polygons (clickable areas)
     const polygons = document.querySelectorAll("polygon");
 
+    // Hover effect: highlight the area on mouseover
     polygons.forEach(polygon => {
       polygon.addEventListener("mouseover", () => {
         if (polygon !== selected) {
@@ -65,22 +85,26 @@
         }
       });
 
+      // Remove hover effect on mouseout
       polygon.addEventListener("mouseout", () => {
         if (polygon !== selected) {
           polygon.classList.remove("hovered");
         }
       });
 
+      // Click event: select an area, change its color
       polygon.addEventListener("click", () => {
+        // Remove selection from previous area, if any
         if (selected) {
           selected.classList.remove("selected");
-          selected.classList.remove("hovered");
         }
+        // Mark current area as selected
         selected = polygon;
         selected.classList.add("selected");
       });
     });
 
+    // Function to submit the answer
     function submitAnswer() {
       if (!selected) {
         alert("Please select an area first.");
