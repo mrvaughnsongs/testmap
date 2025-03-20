@@ -7,6 +7,7 @@
   <style>
     .clickable { cursor: pointer; }
     .highlight { fill: rgba(0, 255, 0, 0.5); }
+    .incorrect { fill: rgba(255, 0, 0, 0.5); }
   </style>
 </head>
 <body>
@@ -15,11 +16,13 @@
   <!-- Map Image (background) -->
   <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map" id="map-image" usemap="#image-map">
 
-  <!-- SVG overlay with clickable areas -->
+  <!-- Image Map with clickable areas -->
   <map name="image-map">
-    <!-- Define your clickable areas here -->
-    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" href="https://www.cnn.com" data-answer="correct">
-    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" href="https://mrvaughnsongs.wordpress.com" data-answer="wrong">
+    <!-- Area 1: Correct answer -->
+    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" data-answer="correct">
+
+    <!-- Area 2: Incorrect answer -->
+    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" data-answer="wrong">
   </map>
 
   <br><br>
@@ -33,13 +36,16 @@
 
     // Function to handle area clicks
     document.querySelectorAll('.clickable').forEach(area => {
-      area.addEventListener('click', () => {
-        // Track if the selected area is correct or not
+      area.addEventListener('click', function(event) {
+        // Prevent the default behavior (which would follow the link)
+        event.preventDefault();
+
+        // Check if the selected area is correct or wrong
         if (area.getAttribute('data-answer') === "correct") {
           score++;
-          area.style.backgroundColor = "green"; // Highlight correct selection
+          area.style.fill = "green"; // Highlight correct selection in green
         } else {
-          area.style.backgroundColor = "red"; // Highlight wrong selection
+          area.style.fill = "red"; // Highlight incorrect selection in red
         }
       });
     });
