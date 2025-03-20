@@ -7,9 +7,9 @@
   <svg id="map-overlay" width="1024" height="640" viewBox="0 0 1024 640" 
        style="position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none;">
     <polygon id="area1" data-name="CNN" points="271,161 387,175 380,270 255,256"
-      fill="transparent" stroke="red" stroke-width="2"/>
+      fill="transparent" stroke="black" stroke-width="2"/>
     <polygon id="area2" data-name="VAUGHN" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"
-      fill="transparent" stroke="blue" stroke-width="2"/>
+      fill="transparent" stroke="black" stroke-width="2"/>
   </svg>
 </div>
 
@@ -49,6 +49,6 @@
 
     localStorage.setItem(quizId + "_answer", selectedName);
     localStorage.setItem(quizId + "_score", isCorrect ? 1 : 0);
-    window.location.href = "quiz2.html"; // change this to the next map
+    window.open("quiz2.html", "_blank"); // opens next quiz in a new window/tab
   }
 </script>
