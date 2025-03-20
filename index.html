@@ -5,52 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Map</title>
   <style>
-    /* Map container */
+    /* Ensure the map image is responsive */
     #map-container {
       position: relative;
       display: inline-block;
     }
 
-    /* Clickable areas */
-    .area {
-      position: absolute;
-      cursor: pointer;
-      background-color: rgba(0, 255, 0, 0.3); /* default highlight */
-    }
-
-    /* Area selected */
-    .clicked {
-      background-color: rgba(0, 0, 255, 0.7); /* clicked color */
-    }
-
-    /* Highlight on hover */
+    /* Highlight color */
     .highlight {
-      background-color: rgba(0, 255, 0, 0.5); /* hover color */
+      opacity: 0.6;
+    }
+
+    /* Clicked area color */
+    .clicked {
+      background-color: rgba(0, 0, 255, 0.6); /* Blue clicked color */
     }
   </style>
 </head>
 <body>
-  <h2>Quiz Map: Select the correct area</h2>
+
+  <h2>Quiz Map: Select an area</h2>
 
   <!-- Map container with background image -->
   <div id="map-container">
-    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map">
-    
-    <!-- Overlaid clickable areas -->
-    <div class="area" id="area1" style="top: 161px; left: 271px; width: 116px; height: 109px;" data-area="1"></div>
-    <div class="area" id="area2" style="top: 356px; left: 275px; width: 116px; height: 141px;" data-area="2"></div>
+    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map" usemap="#image-map">
+
+    <map name="image-map">
+      <!-- Define clickable areas -->
+      <area shape="poly" coords="271,161,387,175,380,270,255,256" alt="Area 1" title="Area 1" href="javascript:void(0);" data-area="1" class="map-area">
+      <area shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="Area 2" title="Area 2" href="javascript:void(0);" data-area="2" class="map-area">
+    </map>
   </div>
 
   <br><br>
 
-  <!-- Button to submit the answers -->
+  <!-- Submit button to submit the answers -->
   <button onclick="submitQuiz()">Submit Quiz</button>
 
   <script>
     let selectedArea = null; // Track the currently selected area
 
     // Function to handle area clicks
-    document.querySelectorAll('.area').forEach(area => {
+    document.querySelectorAll('.map-area').forEach(area => {
       area.addEventListener('click', function(event) {
         // Prevent the default behavior (which would follow the link)
         event.preventDefault();
