@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Interactive Map</h1>
+    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+        <style>
+            .state {
+                fill: #cccccc;
+                stroke: #000;
+                stroke-width: 1;
+                transition: fill 0.3s ease;
+            }
+            .state:hover {
+                fill: orange;
+                cursor: pointer;
+            }
+        </style>
+        <rect class="state" x="50" y="50" width="100" height="100" onclick="alert('State clicked!')" />
+        <rect class="state" x="200" y="50" width="100" height="100" onclick="alert('Another state clicked!')" />
+    </svg>
+    <script src="app.js"></script>
+</body>
+</html>
