@@ -1,93 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz Map</title>
-  <style>
-    /* Ensure the map image is responsive */
-    #map-container {
-      position: relative;
-      display: inline-block;
-    }
+<div style="position: relative; display: inline-block;">
+  <!-- Your background map image -->
+  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" style="width: 100%; display: block;" />
 
-    /* Highlight color */
-    .highlight {
-      opacity: 0.6;
-    }
+  <!-- SVG overlay on top of the image -->
+  <svg viewBox="0 0 1024 640" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
+    <polygon id="area1" points="271,161 387,175 380,270 255,256"
+      fill="transparent" stroke="red" stroke-width="2" />
+    <polygon id="area2" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"
+      fill="transparent" stroke="blue" stroke-width="2" />
+  </svg>
+</div>
 
-    /* Clicked area color */
-    .clicked {
-      background-color: rgba(0, 0, 255, 0.6); /* Blue clicked color */
-    }
-  </style>
-</head>
-<body>
+<script>
+  const polygons = document.querySelectorAll('polygon');
+  let selected = null;
 
-  <h2>Quiz Map: Select an area</h2>
+  polygons.forEach(polygon => {
+    polygon.style.pointerEvents = 'auto';
 
-  <!-- Map container with background image -->
-  <div id="map-container">
-    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map" usemap="#image-map">
-
-    <map name="image-map">
-      <!-- Define clickable areas -->
-      <area shape="poly" coords="271,161,387,175,380,270,255,256" alt="Area 1" title="Area 1" href="javascript:void(0);" data-area="1" class="map-area">
-      <area shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="Area 2" title="Area 2" href="javascript:void(0);" data-area="2" class="map-area">
-    </map>
-  </div>
-
-  <br><br>
-
-  <!-- Submit button to submit the answers -->
-  <button onclick="submitQuiz()">Submit Quiz</button>
-
-  <script>
-    let selectedArea = null; // Track the currently selected area
-
-    // Function to handle area clicks
-    document.querySelectorAll('.map-area').forEach(area => {
-      area.addEventListener('click', function(event) {
-        // Prevent the default behavior (which would follow the link)
-        event.preventDefault();
-
-        // If a new area is clicked, update the selected area
-        if (selectedArea) {
-          // Reset the previous selected area color to its original state
-          selectedArea.classList.remove('clicked');
-        }
-
-        // Add the 'clicked' class to the new selected area
-        selectedArea = area;
-        selectedArea.classList.add('clicked');
-      });
-
-      // Highlight area on mouseover
-      area.addEventListener('mouseover', function() {
-        if (area !== selectedArea) {
-          area.classList.add('highlight'); // Add highlight class on hover
-        }
-      });
-
-      // Remove highlight on mouseout
-      area.addEventListener('mouseout', function() {
-        if (area !== selectedArea) {
-          area.classList.remove('highlight'); // Remove highlight class when mouse leaves
-        }
-      });
+    polygon.addEventListener('mouseover', () => {
+      if (polygon !== selected) polygon.style.fill = 'rgba(0, 255, 0, 0.4)'; // hover color
     });
 
-    // Submit quiz and open a new window with the score
-    function submitQuiz() {
-      if (!selectedArea) {
-        alert("Please select an area before submitting!");
-        return;
-      }
+    polygon.addEventListener('mouseout', () => {
+      if (polygon !== selected) polygon.style.fill = 'transparent';
+    });
 
-      // Open a new window with the score
-      let scoreWindow = window.open("", "_blank", "width=400,height=300");
-      scoreWindow.document.write("<h3>Your selection has been recorded!</h3>");
-    }
-  </script>
-</body>
-</html>
+    polygon.addEventListener('click', () => {
+      if (selected) selected.style.fill = 'transparent';
+      polygon.style.fill = 'rgba(255, 165, 0, 0.6)'; // clicked color
+      selected = polygon;
+    });
+  });
+</script>
