@@ -6,9 +6,8 @@
   <title>Quiz Map</title>
   <style>
     .clickable { cursor: pointer; }
-    .highlight { fill: rgba(0, 255, 0, 0.3); }
-    .clicked-correct { fill: rgba(0, 255, 0, 0.7); } /* Color for correct answer after click */
-    .clicked-wrong { fill: rgba(255, 0, 0, 0.7); } /* Color for wrong answer after click */
+    .highlight { fill: rgba(0, 255, 0, 0.3); } /* Highlight on mouseover */
+    .clicked { fill: rgba(0, 0, 255, 0.7); } /* Color when clicked */
   </style>
 </head>
 <body>
@@ -19,11 +18,11 @@
 
   <!-- Image Map with clickable areas -->
   <map name="image-map">
-    <!-- Area 1: Correct answer -->
-    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" data-answer="correct">
+    <!-- Area 1 -->
+    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" data-area="1">
 
-    <!-- Area 2: Incorrect answer -->
-    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" data-answer="wrong">
+    <!-- Area 2 -->
+    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" data-area="2">
   </map>
 
   <br><br>
@@ -32,8 +31,7 @@
   <button onclick="submitQuiz()">Submit Quiz</button>
 
   <script>
-    let score = 0;
-    let areasClicked = 0; // Track how many areas have been clicked
+    let selectedArea = null; // Track the currently selected area
 
     // Function to handle area clicks
     document.querySelectorAll('.clickable').forEach(area => {
@@ -41,31 +39,27 @@
         // Prevent the default behavior (which would follow the link)
         event.preventDefault();
 
-        // If the area hasn't been clicked already
-        if (!area.classList.contains('clicked')) {
-          areasClicked++; // Increase count of clicked areas
-          area.classList.add('clicked'); // Mark the area as clicked
-
-          // Check if the selected area is correct or wrong
-          if (area.getAttribute('data-answer') === "correct") {
-            score++;
-            area.classList.add('clicked-correct'); // Apply color for correct selection
-          } else {
-            area.classList.add('clicked-wrong'); // Apply color for incorrect selection
-          }
+        // If a new area is clicked, update the selected area
+        if (selectedArea) {
+          // Reset the previous selected area color to its original state
+          selectedArea.style.fill = ""; // Clear fill color
         }
+
+        // Highlight the clicked area
+        selectedArea = area;
+        selectedArea.style.fill = "rgba(0, 0, 255, 0.7)"; // Set clicked color (blue)
       });
 
       // Highlight area on mouseover
       area.addEventListener('mouseover', function() {
-        if (!area.classList.contains('clicked')) {
-          area.style.fill = "rgba(0, 255, 0, 0.3)"; // Highlight on hover
+        if (area !== selectedArea) {
+          area.style.fill = "rgba(0, 255, 0, 0.3)"; // Highlight on hover (green)
         }
       });
 
       // Remove highlight on mouseout
       area.addEventListener('mouseout', function() {
-        if (!area.classList.contains('clicked')) {
+        if (area !== selectedArea) {
           area.style.fill = ""; // Reset fill color
         }
       });
@@ -73,16 +67,14 @@
 
     // Submit quiz and open a new window with the score
     function submitQuiz() {
-      // Only show score if at least one area has been clicked
-      if (areasClicked > 0) {
-        // Open a new window
-        let scoreWindow = window.open("", "_blank", "width=400,height=300");
-        
-        // Write the score to the new window
-        scoreWindow.document.write("<h3>Your Score: " + score + "</h3>");
-      } else {
-        alert("Please select at least one area before submitting!");
+      if (!selectedArea) {
+        alert("Please select an area before submitting!");
+        return;
       }
+
+      // Open a new window with the score
+      let scoreWindow = window.open("", "_blank", "width=400,height=300");
+      scoreWindow.document.write("<h3>Your selection has been recorded!</h3>");
     }
   </script>
 </body>
