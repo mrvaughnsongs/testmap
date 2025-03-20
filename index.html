@@ -6,8 +6,9 @@
   <title>Quiz Map</title>
   <style>
     .clickable { cursor: pointer; }
-    .highlight { fill: rgba(0, 255, 0, 0.5); }
-    .incorrect { fill: rgba(255, 0, 0, 0.5); }
+    .highlight { fill: rgba(0, 255, 0, 0.3); }
+    .clicked-correct { fill: rgba(0, 255, 0, 0.7); } /* Color for correct answer after click */
+    .clicked-wrong { fill: rgba(255, 0, 0, 0.7); } /* Color for wrong answer after click */
   </style>
 </head>
 <body>
@@ -29,7 +30,6 @@
 
   <!-- Button to submit the answers -->
   <button onclick="submitQuiz()">Submit Quiz</button>
-  <p id="score"></p>
 
   <script>
     let score = 0;
@@ -49,19 +49,37 @@
           // Check if the selected area is correct or wrong
           if (area.getAttribute('data-answer') === "correct") {
             score++;
-            area.style.fill = "green"; // Highlight correct selection in green
+            area.classList.add('clicked-correct'); // Apply color for correct selection
           } else {
-            area.style.fill = "red"; // Highlight incorrect selection in red
+            area.classList.add('clicked-wrong'); // Apply color for incorrect selection
           }
+        }
+      });
+
+      // Highlight area on mouseover
+      area.addEventListener('mouseover', function() {
+        if (!area.classList.contains('clicked')) {
+          area.style.fill = "rgba(0, 255, 0, 0.3)"; // Highlight on hover
+        }
+      });
+
+      // Remove highlight on mouseout
+      area.addEventListener('mouseout', function() {
+        if (!area.classList.contains('clicked')) {
+          area.style.fill = ""; // Reset fill color
         }
       });
     });
 
-    // Submit quiz and show score
+    // Submit quiz and open a new window with the score
     function submitQuiz() {
       // Only show score if at least one area has been clicked
       if (areasClicked > 0) {
-        document.getElementById('score').innerText = `Your score: ${score}`;
+        // Open a new window
+        let scoreWindow = window.open("", "_blank", "width=400,height=300");
+        
+        // Write the score to the new window
+        scoreWindow.document.write("<h3>Your Score: " + score + "</h3>");
       } else {
         alert("Please select at least one area before submitting!");
       }
