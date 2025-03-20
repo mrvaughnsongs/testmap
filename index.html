@@ -33,6 +33,7 @@
 
   <script>
     let score = 0;
+    let areasClicked = 0; // Track how many areas have been clicked
 
     // Function to handle area clicks
     document.querySelectorAll('.clickable').forEach(area => {
@@ -40,19 +41,30 @@
         // Prevent the default behavior (which would follow the link)
         event.preventDefault();
 
-        // Check if the selected area is correct or wrong
-        if (area.getAttribute('data-answer') === "correct") {
-          score++;
-          area.style.fill = "green"; // Highlight correct selection in green
-        } else {
-          area.style.fill = "red"; // Highlight incorrect selection in red
+        // If the area hasn't been clicked already
+        if (!area.classList.contains('clicked')) {
+          areasClicked++; // Increase count of clicked areas
+          area.classList.add('clicked'); // Mark the area as clicked
+
+          // Check if the selected area is correct or wrong
+          if (area.getAttribute('data-answer') === "correct") {
+            score++;
+            area.style.fill = "green"; // Highlight correct selection in green
+          } else {
+            area.style.fill = "red"; // Highlight incorrect selection in red
+          }
         }
       });
     });
 
     // Submit quiz and show score
     function submitQuiz() {
-      document.getElementById('score').innerText = `Your score: ${score}`;
+      // Only show score if at least one area has been clicked
+      if (areasClicked > 0) {
+        document.getElementById('score').innerText = `Your score: ${score}`;
+      } else {
+        alert("Please select at least one area before submitting!");
+      }
     }
   </script>
 </body>
