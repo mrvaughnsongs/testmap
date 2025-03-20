@@ -1,30 +1,31 @@
-<div style="position: relative; display: inline-block; width: 1024px; height: 640px;">
-  <!-- Background image with fixed size -->
-  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" 
-       width="1024" height="640" style="display: block; position: absolute; top: 0; left: 0;"/>
+<div style="position: relative; width: 1024px; height: auto;">
+  <!-- Map image -->
+  <img id="base-map" src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" 
+       width="1024" style="display: block; position: absolute; top: 0; left: 0; z-index: 1;" />
 
-  <!-- SVG overlay with matching dimensions -->
-  <svg width="1024" height="640" viewBox="0 0 1024 640" 
-       style="position: absolute; top: 0; left: 0; pointer-events: none;">
+  <!-- SVG overlay -->
+  <svg id="map-overlay" width="1024" height="640" viewBox="0 0 1024 640" 
+       style="position: absolute; top: 0; left: 0; z-index: 2; pointer-events: none;">
     <polygon id="area1" data-name="CNN" points="271,161 387,175 380,270 255,256"
-      fill="transparent" stroke="red" stroke-width="2" />
+      fill="transparent" stroke="red" stroke-width="2"/>
     <polygon id="area2" data-name="VAUGHN" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"
-      fill="transparent" stroke="blue" stroke-width="2" />
+      fill="transparent" stroke="blue" stroke-width="2"/>
   </svg>
 </div>
 
-<!-- Submit button -->
 <button onclick="submitAnswer()" style="margin-top: 20px;">Submit Answer</button>
 
 <script>
-  const polygons = document.querySelectorAll('polygon');
+  const quizId = "quiz1";
+  const correctAnswer = "CNN";
   let selected = null;
 
+  const polygons = document.querySelectorAll('polygon');
   polygons.forEach(polygon => {
     polygon.style.pointerEvents = 'auto';
 
     polygon.addEventListener('mouseover', () => {
-      if (polygon !== selected) polygon.style.fill = 'rgba(0, 255, 0, 0.4)'; // hover color
+      if (polygon !== selected) polygon.style.fill = 'rgba(0, 255, 0, 0.4)';
     });
 
     polygon.addEventListener('mouseout', () => {
@@ -33,7 +34,7 @@
 
     polygon.addEventListener('click', () => {
       if (selected) selected.style.fill = 'transparent';
-      polygon.style.fill = 'rgba(255, 165, 0, 0.6)'; // clicked color
+      polygon.style.fill = 'rgba(255, 165, 0, 0.6)';
       selected = polygon;
     });
   });
@@ -44,6 +45,10 @@
       return;
     }
     const selectedName = selected.getAttribute('data-name');
-    window.open('', '_blank').document.write(`<h1>Your selected answer: ${selectedName}</h1>`);
+    const isCorrect = (selectedName === correctAnswer);
+
+    localStorage.setItem(quizId + "_answer", selectedName);
+    localStorage.setItem(quizId + "_score", isCorrect ? 1 : 0);
+    window.location.href = "quiz2.html"; // change this to the next map
   }
 </script>
