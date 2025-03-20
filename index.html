@@ -5,25 +5,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Map</title>
   <style>
-    .clickable { cursor: pointer; }
-    .highlight { outline: 3px solid green; } /* Highlight on mouseover */
-    .clicked { outline: 3px solid blue; } /* Color when clicked */
+    /* Map container */
+    #map-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Clickable areas */
+    .area {
+      position: absolute;
+      cursor: pointer;
+      background-color: rgba(0, 255, 0, 0.3); /* default highlight */
+    }
+
+    /* Area selected */
+    .clicked {
+      background-color: rgba(0, 0, 255, 0.7); /* clicked color */
+    }
+
+    /* Highlight on hover */
+    .highlight {
+      background-color: rgba(0, 255, 0, 0.5); /* hover color */
+    }
   </style>
 </head>
 <body>
   <h2>Quiz Map: Select the correct area</h2>
-  
-  <!-- Map Image (background) -->
-  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map" id="map-image" usemap="#image-map">
 
-  <!-- Image Map with clickable areas -->
-  <map name="image-map">
-    <!-- Area 1 -->
-    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" data-area="1">
-
-    <!-- Area 2 -->
-    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" data-area="2">
-  </map>
+  <!-- Map container with background image -->
+  <div id="map-container">
+    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map">
+    
+    <!-- Overlaid clickable areas -->
+    <div class="area" id="area1" style="top: 161px; left: 271px; width: 116px; height: 109px;" data-area="1"></div>
+    <div class="area" id="area2" style="top: 356px; left: 275px; width: 116px; height: 141px;" data-area="2"></div>
+  </div>
 
   <br><br>
 
@@ -34,14 +50,14 @@
     let selectedArea = null; // Track the currently selected area
 
     // Function to handle area clicks
-    document.querySelectorAll('.clickable').forEach(area => {
+    document.querySelectorAll('.area').forEach(area => {
       area.addEventListener('click', function(event) {
         // Prevent the default behavior (which would follow the link)
         event.preventDefault();
 
         // If a new area is clicked, update the selected area
         if (selectedArea) {
-          // Reset the previous selected area outline to its original state
+          // Reset the previous selected area color to its original state
           selectedArea.classList.remove('clicked');
         }
 
