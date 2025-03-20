@@ -1,15 +1,20 @@
-<div style="position: relative; display: inline-block;">
-  <!-- Your background map image -->
-  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" style="width: 100%; display: block;" />
+<div style="position: relative; display: inline-block; width: 1024px; height: 640px;">
+  <!-- Background image with fixed size -->
+  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" 
+       width="1024" height="640" style="display: block; position: absolute; top: 0; left: 0;"/>
 
-  <!-- SVG overlay on top of the image -->
-  <svg viewBox="0 0 1024 640" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
-    <polygon id="area1" points="271,161 387,175 380,270 255,256"
+  <!-- SVG overlay with matching dimensions -->
+  <svg width="1024" height="640" viewBox="0 0 1024 640" 
+       style="position: absolute; top: 0; left: 0; pointer-events: none;">
+    <polygon id="area1" data-name="CNN" points="271,161 387,175 380,270 255,256"
       fill="transparent" stroke="red" stroke-width="2" />
-    <polygon id="area2" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"
+    <polygon id="area2" data-name="VAUGHN" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"
       fill="transparent" stroke="blue" stroke-width="2" />
   </svg>
 </div>
+
+<!-- Submit button -->
+<button onclick="submitAnswer()" style="margin-top: 20px;">Submit Answer</button>
 
 <script>
   const polygons = document.querySelectorAll('polygon');
@@ -32,4 +37,13 @@
       selected = polygon;
     });
   });
+
+  function submitAnswer() {
+    if (!selected) {
+      alert("Please select an area first.");
+      return;
+    }
+    const selectedName = selected.getAttribute('data-name');
+    window.open('', '_blank').document.write(`<h1>Your selected answer: ${selectedName}</h1>`);
+  }
 </script>
