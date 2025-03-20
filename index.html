@@ -6,8 +6,8 @@
   <title>Quiz Map</title>
   <style>
     .clickable { cursor: pointer; }
-    .highlight { fill: rgba(0, 255, 0, 0.3); } /* Highlight on mouseover */
-    .clicked { fill: rgba(0, 0, 255, 0.7); } /* Color when clicked */
+    .highlight { outline: 3px solid green; } /* Highlight on mouseover */
+    .clicked { outline: 3px solid blue; } /* Color when clicked */
   </style>
 </head>
 <body>
@@ -41,26 +41,26 @@
 
         // If a new area is clicked, update the selected area
         if (selectedArea) {
-          // Reset the previous selected area color to its original state
-          selectedArea.style.fill = ""; // Clear fill color
+          // Reset the previous selected area outline to its original state
+          selectedArea.classList.remove('clicked');
         }
 
-        // Highlight the clicked area
+        // Add the 'clicked' class to the new selected area
         selectedArea = area;
-        selectedArea.style.fill = "rgba(0, 0, 255, 0.7)"; // Set clicked color (blue)
+        selectedArea.classList.add('clicked');
       });
 
       // Highlight area on mouseover
       area.addEventListener('mouseover', function() {
         if (area !== selectedArea) {
-          area.style.fill = "rgba(0, 255, 0, 0.3)"; // Highlight on hover (green)
+          area.classList.add('highlight'); // Add highlight class on hover
         }
       });
 
       // Remove highlight on mouseout
       area.addEventListener('mouseout', function() {
         if (area !== selectedArea) {
-          area.style.fill = ""; // Reset fill color
+          area.classList.remove('highlight'); // Remove highlight class when mouse leaves
         }
       });
     });
