@@ -2,70 +2,52 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Interactive Map with Hover</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Map</title>
   <style>
-    body {
-      background: #f0f0f0;
-      font-family: sans-serif;
-      text-align: center;
-    }
-
-    .map-container {
-      position: relative;
-      display: inline-block;
-    }
-
-    .map-container img {
-      display: block;
-      max-width: 100%;
-      height: auto;
-    }
-
-    .map-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .map-overlay a {
-      pointer-events: all;
-    }
-
-    .region {
-      fill: transparent;
-      stroke: #000;
-      stroke-width: 2;
-      cursor: pointer;
-      transition: fill 0.3s ease;
-    }
-
-    .region:hover {
-      fill: rgba(255, 0, 0, 0.3);
-    }
+    .clickable { cursor: pointer; }
+    .highlight { fill: rgba(0, 255, 0, 0.5); }
   </style>
 </head>
 <body>
+  <h2>Quiz Map: Select the correct area</h2>
+  
+  <!-- Map Image (background) -->
+  <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" width="1024" height="660" alt="Map" id="map-image" usemap="#image-map">
 
-  <h2>Map with Hoverable Areas</h2>
+  <!-- SVG overlay with clickable areas -->
+  <map name="image-map">
+    <!-- Define your clickable areas here -->
+    <area class="clickable" shape="poly" coords="271,161,387,175,380,270,255,256" alt="CNN" title="CNN" href="https://www.cnn.com" data-answer="correct">
+    <area class="clickable" shape="poly" coords="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" alt="VAUGHN" title="VAUGHN" href="https://mrvaughnsongs.wordpress.com" data-answer="wrong">
+  </map>
 
-  <div class="map-container">
-    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="US Map" width="1024" height="660">
+  <br><br>
 
-    <svg class="map-overlay" viewBox="0 0 1024 660" xmlns="http://www.w3.org/2000/svg">
-      <!-- CNN area -->
-      <a href="https://www.cnn.com" target="_blank">
-        <polygon class="region" points="271,161 387,175 380,270 255,256" />
-      </a>
+  <!-- Button to submit the answers -->
+  <button onclick="submitQuiz()">Submit Quiz</button>
+  <p id="score"></p>
 
-      <!-- Vaughn area -->
-      <a href="https://mrvaughnsongs.wordpress.com" target="_blank">
-        <polygon class="region" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492" />
-      </a>
-    </svg>
-  </div>
+  <script>
+    let score = 0;
 
+    // Function to handle area clicks
+    document.querySelectorAll('.clickable').forEach(area => {
+      area.addEventListener('click', () => {
+        // Track if the selected area is correct or not
+        if (area.getAttribute('data-answer') === "correct") {
+          score++;
+          area.style.backgroundColor = "green"; // Highlight correct selection
+        } else {
+          area.style.backgroundColor = "red"; // Highlight wrong selection
+        }
+      });
+    });
+
+    // Submit quiz and show score
+    function submitQuiz() {
+      document.getElementById('score').innerText = `Your score: ${score}`;
+    }
+  </script>
 </body>
 </html>
