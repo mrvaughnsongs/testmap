@@ -79,13 +79,29 @@
 
   <script>
     let selectedArea = null;
-
     const polygons = document.querySelectorAll('polygon');
 
+    // Function to handle mouseover
     polygons.forEach(polygon => {
+      polygon.addEventListener('mouseover', () => {
+        if (!polygon.classList.contains('selected')) {
+          polygon.style.fill = "rgba(0, 0, 0, 0.2)"; // Highlight on mouseover
+        }
+      });
+
+      // Reset color when mouse leaves
+      polygon.addEventListener('mouseout', () => {
+        if (!polygon.classList.contains('selected')) {
+          polygon.style.fill = "transparent"; // Return to transparent if not selected
+        }
+      });
+
       polygon.addEventListener('click', () => {
+        // Deselect previously selected areas
         polygons.forEach(p => p.classList.remove('selected'));
+        // Add selected class and set the new area
         polygon.classList.add('selected');
+        polygon.style.fill = "rgba(0, 0, 255, 0.4)"; // Set color for selected area
         selectedArea = polygon.getAttribute('data-name');
       });
     });
@@ -96,7 +112,7 @@
         return;
       }
       const resultWindow = window.open('', '_blank');
-      resultWindow.document.write(<h1>Your Selected Area: ${selectedArea}</h1>);
+      resultWindow.document.write(`<h1>Your Selected Area: ${selectedArea}</h1>`);
     }
   </script>
 
