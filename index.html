@@ -7,19 +7,19 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      font-family: sans-serif;
       background: #f0f0f0;
+    }
+
+    .container {
+      max-width: 1024px;
+      margin: 20px auto;
+      padding: 10px;
     }
 
     .map-container {
       position: relative;
-      width: 90vw;
-      max-width: 1024px;
+      width: 100%;
       aspect-ratio: 1024 / 665;
     }
 
@@ -56,23 +56,26 @@
     }
 
     #submitBtn {
-      margin-top: 10px;
+      margin-top: 15px;
+      padding: 10px 20px;
       font-size: 16px;
-      padding: 8px 16px;
+      display: block;
     }
   </style>
 </head>
 <body>
 
-  <div class="map-container">
-    <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
-    <svg viewBox="0 0 1024 665" preserveAspectRatio="xMidYMid meet">
-      <polygon id="area1" points="271,161,387,175,380,270,255,256" data-name="CNN"></polygon>
-      <polygon id="area2" points="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" data-name="VAUGHN"></polygon>
-    </svg>
-  </div>
+  <div class="container">
+    <div class="map-container">
+      <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
+      <svg viewBox="0 0 1024 665" preserveAspectRatio="xMidYMid meet">
+        <polygon id="area1" points="271,161,387,175,380,270,255,256" data-name="CNN"></polygon>
+        <polygon id="area2" points="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" data-name="VAUGHN"></polygon>
+      </svg>
+    </div>
 
-  <button id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
+    <button id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
+  </div>
 
   <script>
     let selectedArea = null;
