@@ -7,30 +7,29 @@
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden; /* Prevent scrollbars */
+      height: 100vh;
+      overflow: hidden;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f0f0f0;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
     }
 
-    .map-wrapper {
-      max-height: 90vh;
-      max-width: 90vw;
-      aspect-ratio: 1024 / 665;
+    .map-container {
       position: relative;
       width: 90vw;
+      max-width: 1024px;
+      aspect-ratio: 1024 / 665;
     }
 
-    .map-wrapper img {
+    .map-container img {
       width: 100%;
-      height: 100%;
+      height: auto;
       display: block;
     }
 
-    .map-wrapper svg {
+    .map-container svg {
       position: absolute;
       top: 0;
       left: 0;
@@ -39,7 +38,7 @@
       pointer-events: none;
     }
 
-    .map-wrapper svg polygon {
+    svg polygon {
       fill: transparent;
       stroke: black;
       stroke-width: 2;
@@ -47,7 +46,7 @@
       transition: fill 0.2s ease;
     }
 
-    .map-wrapper svg polygon:hover {
+    svg polygon:hover {
       fill: rgba(0, 0, 0, 0.2);
       cursor: pointer;
     }
@@ -65,7 +64,7 @@
 </head>
 <body>
 
-  <div class="map-wrapper">
+  <div class="map-container">
     <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
     <svg viewBox="0 0 1024 665" preserveAspectRatio="xMidYMid meet">
       <polygon id="area1" points="271,161,387,175,380,270,255,256" data-name="CNN"></polygon>
