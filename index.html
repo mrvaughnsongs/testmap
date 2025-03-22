@@ -8,7 +8,7 @@
       margin: 0;
       padding: 0;
       font-family: sans-serif;
-      background: #f0f0f0;
+      background: white; /* Set the entire background to white */
     }
 
     .container {
@@ -79,40 +79,14 @@
 
   <script>
     let selectedArea = null;
-    let previousSelected = null;  // Keep track of previously selected area
 
     const polygons = document.querySelectorAll('polygon');
 
-    // Function to handle mouseover
     polygons.forEach(polygon => {
-      polygon.addEventListener('mouseover', () => {
-        if (!polygon.classList.contains('selected')) {
-          polygon.style.fill = "rgba(0, 0, 0, 0.2)"; // Highlight on mouseover
-        }
-      });
-
-      // Reset color when mouse leaves
-      polygon.addEventListener('mouseout', () => {
-        if (!polygon.classList.contains('selected')) {
-          polygon.style.fill = "transparent"; // Return to transparent if not selected
-        }
-      });
-
       polygon.addEventListener('click', () => {
-        // Deselect previously selected areas and reset their color
-        if (previousSelected) {
-          previousSelected.style.fill = "transparent"; // Reset the color of the previous selected area
-        }
-
         polygons.forEach(p => p.classList.remove('selected'));
-
-        // Add selected class and set the new area
         polygon.classList.add('selected');
-        polygon.style.fill = "rgba(0, 0, 255, 0.4)"; // Set color for selected area
         selectedArea = polygon.getAttribute('data-name');
-
-        // Update the previously selected area
-        previousSelected = polygon;
       });
     });
 
