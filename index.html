@@ -1,122 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Map Quiz</title>
-  <style>
-    /* Container for the map */
-    #map-container {
-      position: relative;
-      width: 1024px;
-    }
-
-    /* Map image */
-    #map-image {
-      width: 100%;
-      display: block;
-    }
-
-    /* Overlay for the clickable areas */
-    #map-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none; /* Prevent the overlay from blocking image interaction */
-    }
-
-    /* Styles for the polygons */
-    polygon {
-      fill: transparent;
-      stroke: black;
-      stroke-width: 2;
-      cursor: pointer;
-      pointer-events: auto; /* Allow interaction with SVG polygons */
-    }
-
-    /* Hover effect */
-    .hovered {
-      fill: rgba(0, 255, 0, 0.4);
-    }
-
-    /* Selected area color */
-    .selected {
-      fill: rgba(255, 165, 0, 0.6);
-    }
-
-    /* Submit button styling */
-    #submit-btn {
-      margin-top: 20px;
-      font-size: 18px;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map Quiz</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        #map-container {
+            position: relative;
+            width: 100%;
+            max-width: 1024px; /* Ensures it doesn’t get too large */
+            height: auto;
+        }
+        #map-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        #map-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        path {
+            fill: transparent;
+            stroke: black;
+            stroke-width: 2;
+            transition: fill 0.2s ease-in-out;
+        }
+        path:hover {
+            fill: rgba(0, 0, 255, 0.5);
+        }
+        .selected {
+            fill: rgba(0, 255, 0, 0.5) !important;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Map container with image and overlay for clickable areas -->
-  <div id="map-container">
-    <img id="map-image" src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
-    <svg id="map-overlay" viewBox="0 0 1024 640">
-      <polygon id="area1" data-name="CNN" points="271,161 387,175 380,270 255,256"></polygon>
-      <polygon id="area2" data-name="VAUGHN" points="275,356 391,368 379,489 309,482 306,488 275,484 274,497 256,492"></polygon>
-    </svg>
-  </div>
+    <div id="map-container">
+        <img id="map-image" src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="US Map">
+        
+        <svg id="map-overlay" viewBox="0 0 1024 640" preserveAspectRatio="xMidYMid meet">
+            <path id="area1" d="M271,161 L387,175 L380,270 L255,256 Z" data-name="CNN"></path>
+            <path id="area2" d="M275,356 L391,368 L379,489 L309,482 L306,488 L275,484 L274,497 L256,492 Z" data-name="VAUGHN"></path>
+        </svg>
+    </div>
 
-  <!-- Submit button -->
-  <div>
-    <button id="submit-btn" onclick="submitAnswer()">Submit Answer</button>
-  </div>
+    <button onclick="submitAnswer()">Submit Answer</button>
 
-  <script>
-    let selected = null;
-    const correctAnswer = "CNN"; // Set correct answer
+    <script>
+        let selectedArea = null;
 
-    // Get all polygons (clickable areas)
-    const polygons = document.querySelectorAll("polygon");
+        document.querySelectorAll('path').forEach(area => {
+            area.addEventListener('mouseover', () => {
+                if (area !== selectedArea) area.style.fill = 'rgba(0, 0, 255, 0.5)';
+            });
 
-    // Hover effect: highlight the area on mouseover
-    polygons.forEach(polygon => {
-      polygon.addEventListener("mouseover", () => {
-        if (polygon !== selected) {
-          polygon.classList.add("hovered");
+            area.addEventListener('mouseout', () => {
+                if (area !== selectedArea) area.style.fill = 'transparent';
+            });
+
+            area.addEventListener('click', () => {
+                if (selectedArea) selectedArea.classList.remove('selected');
+                selectedArea = area;
+                selectedArea.classList.add('selected');
+            });
+        });
+
+        function submitAnswer() {
+            if (!selectedArea) {
+                alert("Please select an area on the map first.");
+                return;
+            }
+            const selectedName = selectedArea.dataset.name;
+            localStorage.setItem('score', selectedName); // Example storing score
+            window.open('score.html', '_blank'); // Open score page
         }
-      });
-
-      // Remove hover effect on mouseout
-      polygon.addEventListener("mouseout", () => {
-        if (polygon !== selected) {
-          polygon.classList.remove("hovered");
-        }
-      });
-
-      // Click event: select an area, change its color
-      polygon.addEventListener("click", () => {
-        // Remove selection from previous area, if any
-        if (selected) {
-          selected.classList.remove("selected");
-        }
-        // Mark current area as selected
-        selected = polygon;
-        selected.classList.add("selected");
-      });
-    });
-
-    // Function to submit the answer
-    function submitAnswer() {
-      if (!selected) {
-        alert("Please select an area first.");
-        return;
-      }
-      const selectedName = selected.getAttribute("data-name");
-      const isCorrect = (selectedName === correctAnswer);
-      localStorage.setItem("score", isCorrect ? 1 : 0);
-      localStorage.setItem("answer", selectedName);
-      window.open("result.html", "_blank");
-    }
-  </script>
+    </script>
 
 </body>
 </html>
