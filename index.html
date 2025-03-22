@@ -20,13 +20,18 @@
     .map-container {
       position: relative;
       width: 100%;
-      aspect-ratio: 1024 / 665;
+      height: 0;
+      padding-bottom: 65%; /* Aspect ratio 1024 / 665 */
+      overflow: hidden;
     }
 
     .map-container img {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
+      object-fit: cover;
     }
 
     .map-container svg {
@@ -60,45 +65,13 @@
       padding: 10px 20px;
       font-size: 16px;
       display: block;
+      width: 100%;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="map-container">
-      <img src="https://mrvaughnsongs.wordpress.com/wp-content/uploads/2025/03/1024px-blank_map_of_the_united_states48states.png" alt="Map">
-      <svg viewBox="0 0 1024 665" preserveAspectRatio="xMidYMid meet">
-        <polygon id="area1" points="271,161,387,175,380,270,255,256" data-name="CNN"></polygon>
-        <polygon id="area2" points="275,356,391,368,379,489,309,482,306,488,275,484,274,497,256,492" data-name="VAUGHN"></polygon>
-      </svg>
-    </div>
-
-    <button id="submitBtn" onclick="submitAnswer()">Submit Answer</button>
-  </div>
-
-  <script>
-    let selectedArea = null;
-
-    const polygons = document.querySelectorAll('polygon');
-
-    polygons.forEach(polygon => {
-      polygon.addEventListener('click', () => {
-        polygons.forEach(p => p.classList.remove('selected'));
-        polygon.classList.add('selected');
-        selectedArea = polygon.getAttribute('data-name');
-      });
-    });
-
-    function submitAnswer() {
-      if (!selectedArea) {
-        alert("Please select an area first.");
-        return;
-      }
-      const resultWindow = window.open('', '_blank');
-      resultWindow.document.write(`<h1>Your Selected Area: ${selectedArea}</h1>`);
-    }
-  </script>
-
-</body>
-</html>
+  <div class="container
